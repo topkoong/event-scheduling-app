@@ -20,8 +20,8 @@ export default [
     },
     {
         id: 3,
-        title: 'Lap Dance Saloon',
-        start: new Date(2019, 1, 20, 20, 0, 0, 0),
+        title: 'Livestream: Coding and Algorithm Interview Practice',
+        start: new Date(2019, 1, 19, 20, 0, 0, 0),
         end: new Date(2019, 1, 20, 21, 0, 0, 0),
     },
     {
@@ -35,5 +35,17 @@ export default [
         title: 'NodeConf',
         start: new Date(2019, 1, 25, 11, 0, 0, 0),
         end: new Date(2019, 1, 25, 18, 0, 0, 0),
+    },
+    {
+        id: 6,
+        title: 'HackerNest NYC February Tech Social',
+        start: new Date(2019, 1, 6, 11, 0, 0, 0),
+        end: new Date(2019, 1, 7, 18, 0, 0, 0),
+    },
+    {
+        id: 7,
+        title: '[Special MasterClass] Getting Acquainted with GraphQL',
+        start: new Date(2019, 1, 3, 14, 0, 0, 0),
+        end: new Date(2019, 1, 4, 19, 0, 0, 0),
     },
 ]

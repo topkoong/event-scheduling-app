@@ -14,6 +14,8 @@ class CalendarContainer extends Component {
 		modalShow: false,
 		events,
 		title: '',
+		from: undefined,
+		to: undefined,
 		singleEvent: {},
 		isUpdated: false
 	}
@@ -23,6 +25,9 @@ class CalendarContainer extends Component {
 	// this is a good place to instantiate the network request.
 
 	componentDidMount = () => {
+
+		// Populating the event with dummy data
+
 		events.forEach(event => {
 			this.props.createEvent(event);
 		});
@@ -36,22 +41,6 @@ class CalendarContainer extends Component {
 		});
 	}
 
-	// handleSelectSlot = ({ start, end }) => {
-	// 	const title = window.prompt('New Event name')
-	// 	if (title) {
-	// 		this.setState({
-	// 			events: [
-	// 				...this.state.events,
-	// 				{
-	// 					start,
-	// 					end,
-	// 					title,
-	// 				},
-	// 			],
-	// 		});
-	// 	}
-	// }
-
 	// Closes a bootstrap modal
 
 	modalClose = () => {
@@ -63,7 +52,7 @@ class CalendarContainer extends Component {
 	// Handles a calendar slot when a date selection is made.
 
 	handleSelectSlot = event => {
-		this.setState({ singleEvent: event });
+		this.setState({ singleEvent: event, from: event.start });
 		this.handleShow();
 	}
 
@@ -74,13 +63,28 @@ class CalendarContainer extends Component {
 		this.setState({ [event.target.name]: event.target.value });
 	}
 
+
+	// Handles selecting a range of days (Start date)
+
+	handleFromChange = from => {
+		// Change the from date and focus the "to" input field
+		this.setState({ from });
+	}
+
+	// Handles selecting a range of days  (End date)
+	handleToChange = to => {
+		this.setState({ to });
+	}
+
 	// Handles the submission of the form and has access to the data that the user entered into the form.
 
 	handleSubmit = event => {
 		event.preventDefault();
 		let singleEvent = {
 			...this.state.singleEvent,
-			[event.target.title.name]: event.target.title.value
+			[event.target.title.name]: event.target.title.value,
+			start: this.state.from,
+			end: this.state.to
 		}
 		this.props.createEvent(singleEvent);
 
@@ -93,7 +97,9 @@ class CalendarContainer extends Component {
 		event.preventDefault();
 		let singleEvent = {
 			...this.state.singleEvent,
-			[event.target.title.name]: event.target.title.value
+			[event.target.title.name]: event.target.title.value,
+			start: this.state.from,
+			end: this.state.to
 		}
 		this.props.updateEvent(singleEvent);
 
@@ -105,7 +111,7 @@ class CalendarContainer extends Component {
 	// Handles a selected event when a calendar event is selected.
 
 	handleSelectEvent = event => {
-		this.setState({ singleEvent: event, title: event.title, isUpdated: true });
+		this.setState({ singleEvent: event, title: event.title, isUpdated: true, from: event.start, to: event.end });
 		this.handleShow();
 	}
 
@@ -120,13 +126,17 @@ class CalendarContainer extends Component {
 		this.setState({
 			title: '',
 			singleEvent: {},
-			isUpdated: false
+			isUpdated: false,
+			from: undefined,
+			to: undefined
 		});
 	}
 
 
 
 	render() {
+		const { title, modalShow, isUpdated, from, to } = this.state;
+		const modifiers = { start: from, end: to };
 		return (
 			<React.Fragment>
 				<BigCalendar
@@ -143,15 +153,20 @@ class CalendarContainer extends Component {
 					onSelectSlot={this.handleSelectSlot}
 				/>
 				<EventModal
-					title={this.state.title}
+					title={title}
 					handleChange={this.handleChange}
 					handleSubmit={this.handleSubmit}
-					show={this.state.modalShow}
+					show={modalShow}
 					modalClose={this.modalClose}
 					selectedEvent={this.selectedEvent}
 					handleUpdateSelectedEvent={this.handleUpdateSelectedEvent}
-					isUpdated={this.state.isUpdated}
+					isUpdated={isUpdated}
 					handleDeleteEvent={this.handleDeleteEvent}
+					handleFromChange={this.handleFromChange}
+					handleToChange={this.handleToChange}
+					modifiers={modifiers}
+					from={from}
+					to={to}
 				/>
 			</React.Fragment>
 
