@@ -17,11 +17,18 @@ class CalendarContainer extends Component {
 		singleEvent: {},
 		isUpdated: false
 	}
+
+	// componentDidMount() is invoked immediately after a component is mounted (inserted into the tree).
+	// Initialization that requires DOM nodes should go here. If you need to load data from a remote endpoint, 
+	// this is a good place to instantiate the network request.
+
 	componentDidMount = () => {
 		events.forEach(event => {
 			this.props.createEvent(event);
 		});
 	}
+
+	// Opens a bootstrap modal
 
 	handleShow = () => {
 		this.setState({
@@ -78,15 +85,9 @@ class CalendarContainer extends Component {
 		this.props.createEvent(singleEvent);
 
 		// Clear the state after form submission
-
-		this.setState({
-			title: '',
-			singleEvent: {},
-			isUpdated: false
-		});
-
-
+		this.clearState();
 	}
+
 
 	handleUpdateSelectedEvent = event => {
 		event.preventDefault();
@@ -97,12 +98,8 @@ class CalendarContainer extends Component {
 		this.props.updateEvent(singleEvent);
 
 		// Clear the state after form submission
+		this.clearState();
 
-		this.setState({
-			title: '',
-			singleEvent: {},
-			isUpdated: false
-		});
 	}
 
 	// Handles a selected event when a calendar event is selected.
@@ -116,6 +113,17 @@ class CalendarContainer extends Component {
 		this.props.removeEvent(this.state.singleEvent.id);
 		this.modalClose();
 	}
+
+	// Clear the local state
+
+	clearState = () => {
+		this.setState({
+			title: '',
+			singleEvent: {},
+			isUpdated: false
+		});
+	}
+
 
 
 	render() {
