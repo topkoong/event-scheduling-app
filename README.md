@@ -33,5 +33,8 @@ When you select a calendar event, a modal popup will be opened, and then you can
 When you select a calendar event, a modal popup will be opened, and then you can delete the event.
 
 
-[Here's demo video.](https://youtu.be/zuGjyolK4Hg)
+[![Here's demo video.](https://img.youtube.com/vi/zuGjyolK4Hg/0.jpg)](https://youtu.be/zuGjyolK4Hg)
+
+
+
 
