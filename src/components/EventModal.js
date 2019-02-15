@@ -1,22 +1,47 @@
 import React from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Button, Modal, Form } from 'react-bootstrap';
 
 
-const EventModal = ({ handleChange, handleSubmit, show, toggle, title }) => {
+const EventModal = ({ handleChange, handleSubmit, show, modalClose, title, handleUpdateSelectedEvent, isUpdated, handleDeleteEvent }) => {
+
+	// Inline If-Else with Conditional Operator
+	// Another method for conditionally rendering elements inline is
+	// to use the JavaScript conditional operator condition ? true : false.
 	return (
-		<Modal isOpen={show} toggle={toggle}>
-			<ModalHeader toggle={toggle}>Create a new event</ModalHeader>
-			<ModalBody>
-				<Form onSubmit={handleSubmit}>
-					<FormGroup>
-						<Label for="title">Event Title</Label>
-						<Input type="text" name="title" id="title" placeholder="Enter event title" onChange={handleChange} value={title} />
-					</FormGroup>
-					<Button color="primary" type="submit" onClick={toggle} className="mr-5">Save Changes</Button>
-					<Button color="secondary" onClick={toggle}>Cancel</Button>
-				</Form>
-			</ModalBody>
-		</Modal>
+		<React.Fragment>
+			{isUpdated ? (
+				<Modal show={show} onHide={modalClose}>
+					<Modal.Header closeButton>Update an event</Modal.Header>
+					<Modal.Body>
+						<Form onSubmit={handleUpdateSelectedEvent}>
+							<Form.Group>
+								<Form.Label className="mr-5" for="title">Event Title</Form.Label>
+								<input type="text" name="title" id="title" placeholder="Please enter event title" onChange={handleChange} value={title} />
+							</Form.Group>
+							<Button variant="primary" type="submit" onClick={modalClose} className="mr-5">Save Changes</Button>
+							<Button variant="danger" className="mr-5" onClick={handleDeleteEvent}>Delete this event</Button>
+							<Button variant="secondary" onClick={modalClose}>Cancel</Button>
+							
+						</Form>
+					</Modal.Body>
+				</Modal>
+			) : (
+					<Modal show={show} onHide={modalClose}>
+						<Modal.Header closeButton>Create a new event</Modal.Header>
+						<Modal.Body>
+							<Form onSubmit={handleSubmit}>
+								<Form.Group>
+									<Form.Label className="mr-5" for="title">Event Title</Form.Label>
+									<input type="text" name="title" id="title" placeholder="Please enter event title" onChange={handleChange} value={title} />
+								</Form.Group>
+								<Button variant="primary" type="submit" onClick={modalClose} className="mr-5">Add new event</Button>
+								<Button variant="secondary" onClick={modalClose}>Cancel</Button>
+							</Form>
+						</Modal.Body>
+					</Modal>
+
+			)}
+		</React.Fragment>
 	);
 }
 

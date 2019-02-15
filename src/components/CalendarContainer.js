@@ -14,16 +14,19 @@ class CalendarContainer extends Component {
 		modalShow: false,
 		events,
 		title: '',
-		singleEvent: {}
+		singleEvent: {},
+		isUpdated: false
 	}
 	componentDidMount = () => {
 		events.forEach(event => {
 			this.props.createEvent(event);
 		});
 	}
-	
+
 	handleShow = () => {
-		this.setState({ modalShow: true });
+		this.setState({
+			modalShow: true
+		});
 	}
 
 	// handleSelectSlot = ({ start, end }) => {
@@ -42,41 +45,82 @@ class CalendarContainer extends Component {
 	// 	}
 	// }
 
+	// Closes a bootstrap modal
+
 	modalClose = () => {
 		this.setState({
-			modalShow: false
+			modalShow: false,
 		});
 	}
 
-	toggle = () => {
-		this.setState(prevState => ({
-			modalShow: !prevState.modalShow
-		}));
-	}
+	// Handles a calendar slot when a date selection is made.
 
 	handleSelectSlot = event => {
-		this.setState({singleEvent: event});
+		this.setState({ singleEvent: event });
 		this.handleShow();
 	}
+
+	// Since handleChange runs on every keystroke to update the React state,
+	// the displayed value will update as the user types.
 
 	handleChange = event => {
 		this.setState({ [event.target.name]: event.target.value });
 	}
 
+	// Handles the submission of the form and has access to the data that the user entered into the form.
+
 	handleSubmit = event => {
 		event.preventDefault();
 		let singleEvent = {
 			...this.state.singleEvent,
-			[event.target.title.name]: event.target.title.value}
-		this.setState({singleEvent});
-		this.props.createEvent(singleEvent)
+			[event.target.title.name]: event.target.title.value
+		}
+		this.props.createEvent(singleEvent);
 
+		// Clear the state after form submission
+
+		this.setState({
+			title: '',
+			singleEvent: {},
+			isUpdated: false
+		});
+
+
+	}
+
+	handleUpdateSelectedEvent = event => {
+		event.preventDefault();
+		let singleEvent = {
+			...this.state.singleEvent,
+			[event.target.title.name]: event.target.title.value
+		}
+		this.props.updateEvent(singleEvent);
+
+		// Clear the state after form submission
+
+		this.setState({
+			title: '',
+			singleEvent: {},
+			isUpdated: false
+		});
+	}
+
+	// Handles a selected event when a calendar event is selected.
+
+	handleSelectEvent = event => {
+		this.setState({ singleEvent: event, title: event.title, isUpdated: true });
+		this.handleShow();
+	}
+
+	handleDeleteEvent = () => {
+		this.props.removeEvent(this.state.singleEvent.id);
+		this.modalClose();
 	}
 
 
 	render() {
 		return (
-			<div>
+			<React.Fragment>
 				<BigCalendar
 					selectable
 					localizer={localizer}
@@ -87,10 +131,21 @@ class CalendarContainer extends Component {
 					endAccessor="end"
 					style={{ height: "100vh" }}
 					// onSelectEvent={event => alert(`${event.title} Start:${event.start} End:${event.end}`)}
+					onSelectEvent={this.handleSelectEvent}
 					onSelectSlot={this.handleSelectSlot}
 				/>
-				<EventModal title={this.state.title} handleChange={this.handleChange} handleSubmit={this.handleSubmit} show={this.state.modalShow} toggle={this.toggle} />
-			</div>
+				<EventModal
+					title={this.state.title}
+					handleChange={this.handleChange}
+					handleSubmit={this.handleSubmit}
+					show={this.state.modalShow}
+					modalClose={this.modalClose}
+					selectedEvent={this.selectedEvent}
+					handleUpdateSelectedEvent={this.handleUpdateSelectedEvent}
+					isUpdated={this.state.isUpdated}
+					handleDeleteEvent={this.handleDeleteEvent}
+				/>
+			</React.Fragment>
 
 		);
 	}
@@ -102,11 +157,11 @@ const mapStateToProps = state => {
 	}
 };
 const mapDispatchToProps = dispatch => {
-    return {
+	return {
 		createEvent: event => dispatch(addEvent(event)),
 		updateEvent: event => dispatch(updateEvent(event)),
 		removeEvent: eventId => dispatch(deleteEvent(eventId))
-    };
+	};
 };
 
 
