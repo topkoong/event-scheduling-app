@@ -1,5 +1,5 @@
 This is a simple event scheduling app created by Theerut Foongkiatcharoen.
-You can filter your event schedule by month, week, day, and agenda view.
+You can filter your events by month, week, day, to view the agenda.
 
 ### Starting point
 1. Fork or clone this repository
@@ -7,11 +7,9 @@ You can filter your event schedule by month, week, day, and agenda view.
 
 
 ### Available Scripts
-
 In the project directory, you can run:
 
 ### `npm start`
-
 Runs the app in the development mode.<br>
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
@@ -19,21 +17,16 @@ The page will reload if you make edits.<br>
 
 
 ### How to create an event
-
-When you select a calendar slot, a modal popup will be opened, and then you can fill out an event title and select the range of the days in the calendar.
-You can also add another events to the same calendar slot when you click the calendar slot below the existing event.
-
+When you select a calendar slot, a modal will pop up, where you can create a title for an event with a specified time frame. 
+You can also create additional events on a date that already has a scheduled event.
 
 ### How to update an event
-
-When you select a calendar event, a modal popup will be opened, and then you can update the event title and start date and end date with pre-populated field.
+When you select a pre-existing event on the calendar, a modal will pop up, where you can update the specified event and change the title or the time frame.
 
 ### How to delete an event
+When you select a calendar event, a modal will pop up, where a user is given the option to delete that specified event.
 
-When you select a calendar event, a modal popup will be opened, and then you can delete the event.
-
-## Below is a link to an app demo video.
-
+### Link to the demo video.
 [![Here's demo video.](https://img.youtube.com/vi/zuGjyolK4Hg/0.jpg)](https://youtu.be/zuGjyolK4Hg)
 
 
