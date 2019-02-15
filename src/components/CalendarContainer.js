@@ -33,6 +33,19 @@ class CalendarContainer extends Component {
 		});
 	}
 
+	// Clear the local state
+
+	clearState = () => {
+		this.setState({
+			title: '',
+			singleEvent: {},
+			isUpdated: false,
+			from: undefined,
+			to: undefined,
+			modalShow: false
+		});
+	}
+
 	// Opens a bootstrap modal
 
 	handleShow = () => {
@@ -45,7 +58,7 @@ class CalendarContainer extends Component {
 
 	modalClose = () => {
 		this.setState({
-			modalShow: false,
+			modalShow: false
 		});
 	}
 
@@ -118,19 +131,11 @@ class CalendarContainer extends Component {
 	handleDeleteEvent = () => {
 		this.props.removeEvent(this.state.singleEvent.id);
 		this.modalClose();
+		// Clear the state after form submission
+		this.clearState();
 	}
 
-	// Clear the local state
 
-	clearState = () => {
-		this.setState({
-			title: '',
-			singleEvent: {},
-			isUpdated: false,
-			from: undefined,
-			to: undefined
-		});
-	}
 
 
 
@@ -167,6 +172,7 @@ class CalendarContainer extends Component {
 					modifiers={modifiers}
 					from={from}
 					to={to}
+					clearState={this.clearState}
 				/>
 			</React.Fragment>
 

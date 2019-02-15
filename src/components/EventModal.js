@@ -17,7 +17,8 @@ const EventModal = ({
 	handleToChange,
 	from,
 	to,
-	modifiers }) => {
+	modifiers,
+	clearState }) => {
 
 	// isUpdated - Inline If-Else with Conditional Operator
 	// Another method for conditionally rendering elements inline is
@@ -89,7 +90,7 @@ const EventModal = ({
 							</Form.Group>
 							<Button variant="primary" type="submit" onClick={modalClose} className="mr-5" disabled={title.length === 0}>Save Changes</Button>
 							<Button variant="danger" className="mr-5" onClick={handleDeleteEvent}>Delete this event</Button>
-							<Button variant="secondary" onClick={modalClose}>Cancel</Button>
+							<Button variant="secondary" onClick={clearState}>Cancel</Button>
 
 						</Form>
 					</Modal.Body>
