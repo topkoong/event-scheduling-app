@@ -25,62 +25,67 @@ const EventModal = ({
 	return (
 		<React.Fragment>
 			{isUpdated ? (
-				<Modal show={show} onHide={modalClose}>
+				<Modal show={show} onHide={modalClose} size="lg">
 					<Modal.Header closeButton>Update an event</Modal.Header>
 					<Modal.Body>
 						<Form onSubmit={handleUpdateSelectedEvent} validated={true}>
 							<Form.Group>
 								<Form.Label className="mr-5" htmlFor="title">Event Title</Form.Label>
 								<Form.Control
-										name="title"
-										id="title"
-										required
-										type="text"
-										placeholder="Please enter event title"
-										onChange={handleChange}
-										value={title}
+									name="title"
+									id="title"
+									required
+									type="text"
+									placeholder="Please enter event title"
+									onChange={handleChange}
+									value={title}
 								/>
-								<Form.Control.Feedback type="invalid">
-										Please enter event title
-              						</Form.Control.Feedback>
+								{
+									title.length === 0 ? (
+										<Form.Control.Feedback type="invalid">
+											Please enter event title
+											</Form.Control.Feedback>
+									) :
+										null
+								}
 								<div className="InputFromTo">
+									<DayPickerInput
+										value={from}
+										placeholder="From"
+										format="LL"
+										formatDate={formatDate}
+										parseDate={parseDate}
+										dayPickerProps={{
+											selectedDays: [from, { from, to }],
+											disabledDays: { after: to },
+											toMonth: to,
+											modifiers,
+											numberOfMonths: 2,
+											onDayClick: () => to.getInput().focus(),
+										}}
+										onDayChange={handleFromChange}
+									/>{' '}
+									—{' '}
+									<span className="InputFromTo-to">
 										<DayPickerInput
-											value={from}
-											placeholder="From"
+											ref={el => (to = el)}
+											value={to}
+											placeholder="To"
 											format="LL"
 											formatDate={formatDate}
 											parseDate={parseDate}
 											dayPickerProps={{
 												selectedDays: [from, { from, to }],
-												disabledDays: { after: to },
-												toMonth: to,
+												disabledDays: { before: from },
 												modifiers,
+												month: from,
+												fromMonth: from,
 												numberOfMonths: 2,
-												onDayClick: () => to.getInput().focus(),
 											}}
-											onDayChange={handleFromChange}
-										/>{' '}
-										—{' '}
-										<span className="InputFromTo-to">
-											<DayPickerInput
-												ref={el => (to = el)}
-												value={to}
-												placeholder="To"
-												format="LL"
-												formatDate={formatDate}
-												parseDate={parseDate}
-												dayPickerProps={{
-													selectedDays: [from, { from, to }],
-													disabledDays: { before: from },
-													modifiers,
-													month: from,
-													fromMonth: from,
-													numberOfMonths: 2,
-												}}
-												onDayChange={handleToChange}
-											/>
-										</span>
-									</div>
+											onDayChange={handleToChange}
+										/>
+									</span>
+								</div>
 							</Form.Group>
 							<Button variant="primary" type="submit" onClick={modalClose} className="mr-5" disabled={title.length === 0}>Save Changes</Button>
 							<Button variant="danger" className="mr-5" onClick={handleDeleteEvent}>Delete this event</Button>
@@ -90,7 +95,7 @@ const EventModal = ({
 					</Modal.Body>
 				</Modal>
 			) : (
-					<Modal show={show} onHide={modalClose}>
+					<Modal show={show} onHide={modalClose} size="lg">
 						<Modal.Header closeButton>Create a new event</Modal.Header>
 						<Modal.Body>
 							<Form onSubmit={handleSubmit} validated={true}>
@@ -105,9 +110,15 @@ const EventModal = ({
 										onChange={handleChange}
 										value={title}
 									/>
-									<Form.Control.Feedback type="invalid">
-										Please enter event title
-              						</Form.Control.Feedback>
+									{
+										title.length === 0 ? (
+											<Form.Control.Feedback type="invalid">
+												Please enter event title
+											</Form.Control.Feedback>
+										) :
+											null
+									}
+
 									<div className="InputFromTo">
 										<DayPickerInput
 											value={from}
